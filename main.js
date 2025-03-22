@@ -1,7 +1,33 @@
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 
+let _scrollbarWidth;
+
 function Modal(){
+    function getScrollbarWidth(){
+        if(getScrollbarWidth.value){
+            console.log(`Has exited ${getScrollbarWidth.value}`);
+        }
+
+        //create element "div"
+        const div = document.createElement("div");
+        //create scrollbar for div
+        Object.assign(div.style, {
+            overflow: "scroll",
+            top: "-9999px",
+            position: "absolute",
+        })
+        //append into body
+        document.body.appendChild(div)
+        //calculator scrollbar width
+        const scrollbarWidth = div.offsetWidth - div.clientWidth;
+        getScrollbarWidth.value = scrollbarWidth;
+        //remove scrollbar 
+        document.body.removeChild(div);
+
+        return scrollbarWidth;
+    }
+
     this.openModal = ((options = {}) => {
 
         const {templateId, allowBackdropClose = true} = options
@@ -101,23 +127,5 @@ $("#open-modal-2").onclick = () => {
     }
 }
 
-function getScrollbarWidth(){
-    //create element "div"
-    const div = document.createElement("div");
-    //create scrollbar for div
-    Object.assign(div.style, {
-        overflow: "scroll",
-        top: "-9999px",
-        position: "absolute",
-    })
-    //append into body
-    document.body.appendChild(div)
-    //calculator scrollbar width
-    const scrollbarWidth = div.offsetWidth - div.clientWidth;
-    //remove scrollbar 
-    document.body.removeChild(div);
-
-    return scrollbarWidth;
-}
 
 
