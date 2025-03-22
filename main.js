@@ -58,7 +58,8 @@ function Modal(){
         })
 
         //disable scroll
-        document.body.classList.add("no-scroll")
+        document.body.classList.add("no-scroll");
+        document.body.style.paddingRight = getScrollbarWidth() + "px"
 
         return backdrop;
     })
@@ -69,7 +70,8 @@ function Modal(){
         }
         
         //enable croll
-        document.body.classList.remove("no-scroll")
+        document.body.classList.remove("no-scroll");
+        document.body.style.paddingRight = "";
     }
 }
 
@@ -98,3 +100,24 @@ $("#open-modal-2").onclick = () => {
         }
     }
 }
+
+function getScrollbarWidth(){
+    //create element "div"
+    const div = document.createElement("div");
+    //create scrollbar for div
+    Object.assign(div.style, {
+        overflow: "scroll",
+        top: "-9999px",
+        position: "absolute",
+    })
+    //append into body
+    document.body.appendChild(div)
+    //calculator scrollbar width
+    const scrollbarWidth = div.offsetWidth - div.clientWidth;
+    //remove scrollbar 
+    document.body.removeChild(div);
+
+    return scrollbarWidth;
+}
+
+
