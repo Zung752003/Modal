@@ -5,6 +5,7 @@ let _scrollbarWidth;
 
 function Modal(){
     function getScrollbarWidth(){
+        
         if(getScrollbarWidth.value){
             console.log(`Has exited ${getScrollbarWidth.value}`);
         }
@@ -101,21 +102,37 @@ function Modal(){
     }
 }
 
-const modal = new Modal();
+const modal1 = new Modal({
+    templateId: "modal-1"
+});
 
 $("#open-modal-1").onclick = () => {
-    const modalElement = modal.openModal({
-        templateId: "modal-1"
-    });
+    const modalElement = modal1.open();
+
+    //modal1.close();
     console.log(modalElement.querySelector("img"));
 }
 
-$("#open-modal-2").onclick = () => {
-    const modalElement = modal.openModal({
-        templateId: "modal-2",
-        allowBackdropClose: false,
-    });
 
+const modal2 = new Modal({
+    templateId: "modal-2",
+    // closeMethod: ['button', 'overlay', 'escape']
+    footer: true,
+    cssClass: ['class1', 'class2', 'class3'],
+    onOpen: () => {
+        console.log("Open modal");
+    },
+    onClose: () => {
+        console.log("Close modal");
+    }
+
+
+});
+
+$("#open-modal-2").onclick = () => {
+    const modalElement = modal2.open();
+
+    //modal2.close();
 
     const form = modalElement.querySelector("#login-form");
     form.onsubmit = e => {
