@@ -8,24 +8,28 @@ function Modal(options = {}){
         templateId, 
         closeMethods = ["button", "overlay", "escape"],
         destroyOnClose = true,
-        cssClass = []} = options;
-        const template = $(`#${templateId}`);
-        
-        if(!template){
-            console.error(`${templateId} dose not exists! `);
-            return;
-        }
+        cssClass = [],
+        onOpen,
+        onClose,
+    } = options;
+    
+    const template = $(`#${templateId}`);
+    
+    if(!template){
+        console.error(`${templateId} dose not exists! `);
+        return;
+    }
 
-        this._allowButtonClose = closeMethods.includes("button");
-        this._allowBackdropClose = closeMethods.includes("overlay");
-        this._allowEscapeClose = closeMethods.includes("escape");
+    this._allowButtonClose = closeMethods.includes("button");
+    this._allowBackdropClose = closeMethods.includes("overlay");
+    this._allowEscapeClose = closeMethods.includes("escape");
 
 
 
     function getScrollbarWidth(){
-        if(getScrollbarWidth.value){
-            console.log(`Has exited ${getScrollbarWidth.value}`);
-        }
+        // if(getScrollbarWidth.value){
+        //     console.log(`Has exited ${getScrollbarWidth.value}`);
+        // }
 
         //create element "div"
         const div = document.createElement("div");
@@ -114,13 +118,19 @@ function Modal(options = {}){
 
         //disable scroll
         document.body.classList.add("no-scroll");
-        document.body.style.paddingRight = getScrollbarWidth() + "px"
+        document.body.style.paddingRight = getScrollbarWidth() + "px";
+
+        this._backdrop.ontransitionend = (e) => {
+            if(e.propertyName !== "transform")  return;
+            if(typeof onOpen === "function") onOpen();
+        }
 
         return this._backdrop;
     })
     this.close = (destroy = destroyOnClose) => {
         this._backdrop.classList.remove("show");
-        this._backdrop.ontransitionend = () => {
+        this._backdrop.ontransitionend = (e) => {
+            if(e.propertyName !== "transform")  return;
             if(this._backdrop && destroy){
                 this._backdrop.remove();
                 this._backdrop = null;
@@ -130,6 +140,7 @@ function Modal(options = {}){
         //enable croll
         document.body.classList.remove("no-scroll");
         document.body.style.paddingRight = "";
+        if(typeof onClose === "function")  onClose();
     }
 
     this.destroy = () => {
@@ -141,11 +152,17 @@ function Modal(options = {}){
 const modal1 = new Modal({
     templateId: "modal-1",
     destroyOnClose: false,
+    onOpen: () => {
+        console.log("open Modal 1");
+    },
+    onClose: () => {
+        console.log("close Modal 1");
+    }
 });
 
 $("#open-modal-1").onclick = () => {
     const modalElement = modal1.open();
-    console.log(modalElement.querySelector("img"));
+    // console.log(modalElement.querySelector("img"));
 }
 
 const modal2 = new Modal({
@@ -154,10 +171,10 @@ const modal2 = new Modal({
     footer: true,
     cssClass: ["class1", "class2", "classN"],
     onOpen: () => {
-        console.log("open Modal");
+        console.log("open Modal 2");
     },
     onClose: () => {
-        console.log("close Modal");
+        console.log("close Modal 2");
     }
 })
 
