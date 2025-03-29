@@ -93,22 +93,22 @@ main {
     gap: 10px;
 }
 
-.modal-button{
+.modal-btn{
     background: #eb8602;
     color: #fff;
     padding: 10px 20px;
     border-radius: 8px;
 }
 
-.modal-button.primary {
+.modal-btn.primary {
     background: #0d5604;
 }
 
-.modal-button.danger {
+.modal-btn.danger {
     background: #ff0202;
 }
 
-.modal-button.pull-left {
+.modal-btn.pull-left {
     margin-right: auto;
 }
 
